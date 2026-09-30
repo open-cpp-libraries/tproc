@@ -64,7 +64,7 @@ namespace ocl::tproc::rope
 					return beg;
 			}
 
-			return end;
+			return nullptr;
 		}
 	};
 
@@ -97,7 +97,7 @@ namespace ocl::tproc::rope
 					return beg;
 			}
 
-			return end;
+			return nullptr;
 		}
 	};
 
@@ -130,7 +130,7 @@ namespace ocl::tproc::rope
 					return beg;
 			}
 
-			return end;
+			return nullptr;
 		}
 	};
 
@@ -157,7 +157,7 @@ namespace ocl::tproc::rope
 					return beg;
 			}
 
-			return end;
+			return nullptr;
 		}
 	};
 
@@ -184,7 +184,7 @@ namespace ocl::tproc::rope
 					return beg;
 			}
 
-			return end;
+			return nullptr;
 		}
 	};
 
