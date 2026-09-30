@@ -8,6 +8,7 @@
 #define OCL_TPROC_ROPE_FWD_INL
 
 #include <boost/system/error_code.hpp>
+#include <stdexcept>
 
 namespace ocl::tproc
 {
@@ -626,6 +627,7 @@ namespace ocl::tproc
 	template <class CharT, class Traits, class Allocator>
 	basic_rope<CharT, Traits, Allocator>::rope_ptr basic_rope<CharT, Traits, Allocator>::operator++()
 	{
+        if (!impl_->right_) throw std::runtime_error("invalid index");
 		return impl_->right_;
 	}
 
