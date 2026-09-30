@@ -217,12 +217,7 @@ namespace ocl::tproc
 		bool ends_with(const boost::core::basic_string_view<CharT>& suffix) const
 		{
 			size_type total = total_size();
-
-			if (suffix.size() > total)
-				return false;
-
-			size_type start_pos = total - suffix.size();
-			return check_suffix(suffix, start_pos, 0);
+			return check_suffix(suffix, total, 0);
 		}
 
 		bool equals(const tree_impl* other) const
@@ -262,21 +257,19 @@ namespace ocl::tproc
 			{
 				size_type to_check = std::min(weight_, prefix.size() - checked);
 
-				if (Traits::compare(blob_, prefix.c_str() + checked, to_check) != 0)
+				if (Traits::compare(blob_, (prefix.data() + checked), to_check) != 0)
 					return false;
-				checked += to_check;
 
-				return checked >= prefix.size();
+				return true;
 			}
 
 			// Internal node
 			if (left_ && !left_->impl_->check_prefix(prefix, checked))
 				return false;
-			if (checked >= prefix.size())
-				return true;
 			if (right_)
 				return right_->impl_->check_prefix(prefix, checked);
-			return checked >= prefix.size();
+
+			return true;
 		}
 
 		bool check_suffix(const boost::core::basic_string_view<CharT>& suffix, size_type rope_pos, size_type suffix_pos) const
@@ -291,36 +284,15 @@ namespace ocl::tproc
 				if (Traits::compare(blob_ + rope_pos, (suffix.data() + suffix_pos), to_check) != 0)
 					return false;
 
-				return suffix_pos + to_check >= suffix.size();
+				return true;
 			}
 
-			// Internal node
-			if (rope_pos < weight_)
-			{
-				if (!left_)
-					return false;
-
-				size_type left_check = std::min(weight_ - rope_pos, suffix.size() - suffix_pos);
-
-				if (!left_->impl_->check_suffix(suffix, rope_pos, suffix_pos))
-					return false;
-
-				suffix_pos += left_check;
-
-				if (suffix_pos >= suffix.size())
-					return true;
-
-				rope_pos = 0;
-			}
-			else
-			{
-				rope_pos -= weight_;
-			}
-
+			if (left_ && !left_->impl_->check_suffix(suffix, rope_pos, suffix_pos))
+				return false;
 			if (right_)
 				return right_->impl_->check_suffix(suffix, rope_pos, suffix_pos);
-
-			return suffix_pos >= suffix.size();
+            
+			return true;
 		}
 	};
 
