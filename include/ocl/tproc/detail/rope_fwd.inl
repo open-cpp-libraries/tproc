@@ -207,17 +207,15 @@ namespace ocl::tproc
 
 		bool starts_with(const boost::core::basic_string_view<CharT>& prefix) const
 		{
-			if (prefix.size() > total_size())
-				return false;
-
-			size_type checked{};
-			return check_prefix(prefix, checked);
+            return strcmp(this->blob_, prefix.data()) == 0;
 		}
 
 		bool ends_with(const boost::core::basic_string_view<CharT>& suffix) const
 		{
-			size_type total = total_size();
-			return check_suffix(suffix, total, 0);
+            if (this->blob_ && std::string(this->blob_).ends_with(suffix))
+                return true;
+
+            return false;
 		}
 
 		bool equals(const tree_impl* other) const
