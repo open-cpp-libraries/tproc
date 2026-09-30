@@ -56,7 +56,7 @@ namespace ocl::tproc::rope
 		{
 			for (auto beg{begin}; beg != end; ++beg)
 			{
-				if (beg->ends_with(cond_.to_string()))
+				if (beg->ends_with(cond_))
 					return beg;
 			}
 
