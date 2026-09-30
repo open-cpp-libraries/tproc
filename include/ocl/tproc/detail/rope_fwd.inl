@@ -8,6 +8,7 @@
 #define OCL_TPROC_ROPE_FWD_INL
 
 #include <boost/system/error_code.hpp>
+#include <iostream>
 #include <stdexcept>
 
 namespace ocl::tproc
@@ -207,15 +208,18 @@ namespace ocl::tproc
 
 		bool starts_with(const boost::core::basic_string_view<CharT>& prefix) const
 		{
-            return strcmp(this->blob_, prefix.data()) == 0;
+			if (this->blob_ && std::string(this->blob_).starts_with(prefix))
+				return true;
+
+			return false;
 		}
 
 		bool ends_with(const boost::core::basic_string_view<CharT>& suffix) const
 		{
-            if (this->blob_ && std::string(this->blob_).ends_with(suffix))
-                return true;
+			if (this->blob_ && std::string(this->blob_).ends_with(suffix))
+				return true;
 
-            return false;
+			return false;
 		}
 
 		bool equals(const tree_impl* other) const
@@ -289,7 +293,7 @@ namespace ocl::tproc
 				return false;
 			if (right_)
 				return right_->impl_->check_suffix(suffix, rope_pos, suffix_pos);
-            
+
 			return true;
 		}
 	};
@@ -597,21 +601,25 @@ namespace ocl::tproc
 	template <class CharT, class Traits, class Allocator>
 	basic_rope<CharT, Traits, Allocator>::rope_ptr basic_rope<CharT, Traits, Allocator>::operator++()
 	{
-        if (!impl_->right_) throw std::runtime_error("invalid index");
-		return impl_->right_;
+        if (!impl_) return this;
+
+		if (!impl_->right_)
+			return impl_->left_;
+
+		return impl_->right_ ? impl_->right_ : this;
 	}
 
 	template <class CharT, class Traits, class Allocator>
 	basic_rope<CharT, Traits, Allocator>::rope_ptr basic_rope<CharT, Traits, Allocator>::operator++(int n)
 	{
 		rope_ptr ret{};
-		while (n && ret)
+		while (n)
 		{
 			ret = ret->operator++();
 			--n;
 		}
 
-		return ret;
+		return ret ? ret : this;
 	}
 
 	template <class CharT, class Traits, class Allocator>
