@@ -30,6 +30,8 @@ namespace ocl::tproc::rope
 		{
 			for (auto rbeg{rbegin}; rbeg != rend; ++rbeg)
 			{
+				if (!rbeg) break;
+                
 				if (*rbeg == cond_)
 					return rbeg;
 			}
@@ -56,6 +58,8 @@ namespace ocl::tproc::rope
 		{
 			for (auto beg{begin}; beg != end; ++beg)
 			{
+				if (!beg) break;
+
 				if (beg->ends_with(cond_))
 					return beg;
 			}
@@ -87,6 +91,8 @@ namespace ocl::tproc::rope
 
 			for (auto beg{begin}; beg != end; ++beg)
 			{
+				if (!beg) break;
+
 				if (*beg == cond_)
 					return beg;
 			}
@@ -118,6 +124,8 @@ namespace ocl::tproc::rope
 
 			for (auto beg{begin}; beg != end; ++beg)
 			{
+				if (!beg) break;
+
 				if (*beg == cond_)
 					return beg;
 			}
@@ -143,6 +151,8 @@ namespace ocl::tproc::rope
 		{
 			for (auto beg{begin}; beg != end; ++beg)
 			{
+				if (!beg) break;
+
 				if (*beg == cond_)
 					return beg;
 			}
@@ -168,6 +178,8 @@ namespace ocl::tproc::rope
 		{
 			for (auto beg{begin}; beg != end; ++beg)
 			{
+				if (!beg) break;
+
 				if (beg->starts_with(cond_))
 					return beg;
 			}
