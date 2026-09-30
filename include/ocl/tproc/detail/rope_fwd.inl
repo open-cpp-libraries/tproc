@@ -612,7 +612,7 @@ namespace ocl::tproc
 	template <class CharT, class Traits, class Allocator>
 	basic_rope<CharT, Traits, Allocator>::rope_ptr basic_rope<CharT, Traits, Allocator>::operator++(int n)
 	{
-		rope_ptr ret{};
+		rope_ptr ret{this};
 		while (n)
 		{
 			ret = ret->operator++();
