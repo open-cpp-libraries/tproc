@@ -288,7 +288,7 @@ namespace ocl::tproc
 
 				size_type to_check = std::min(weight_ - rope_pos, suffix.size() - suffix_pos);
 
-				if (Traits::compare(blob_ + rope_pos, suffix.to_string() + suffix_pos, to_check) != 0)
+				if (Traits::compare(blob_ + rope_pos, (suffix.data() + suffix_pos), to_check) != 0)
 					return false;
 
 				return suffix_pos + to_check >= suffix.size();
